@@ -1,6 +1,8 @@
 ```
 parsers: # array
+  # - reg: ^.*$ 匹配所有订阅，或  - url: https://example.com/profile.yaml 指定订阅
   - reg: ^.*$
+  # 删除服务商提供的策略组和规则
     code: |
       module.exports.parse = (raw, { yaml }) => {
         const rawObj = yaml.parse(raw)
@@ -9,58 +11,39 @@ parsers: # array
         return yaml.stringify({ ...rawObj, 'proxy-groups': groups, rules })
       }
 
+    # 建立自己的配置
     yaml:
-      prepend-proxy-groups:
+      prepend-proxy-groups: # 建立策略组
         - name: 全部
           type: url-test
           url: http://www.gstatic.com/generate_204
-          interval: 600
+          interval: 60
 
         - name: 香港
           type: url-test
           url: http://www.gstatic.com/generate_204
-          interval: 600
+          interval: 60
 
-        - name: 台湾
+        - name: 其他
           type: url-test
           url: http://www.gstatic.com/generate_204
-          interval: 600
-
-        - name: 日本
-          type: url-test
-          url: http://www.gstatic.com/generate_204
-          interval: 600
-
-        - name: 新加坡
-          type: url-test
-          url: http://www.gstatic.com/generate_204
-          interval: 600
-
-        - name: 美国
-          type: url-test
-          url: http://www.gstatic.com/generate_204
-          interval: 600
+          interval: 60
 
         - name: 选择
           type: select
           proxies:
             - 全部
             - 香港
-            - 台湾
-            - 日本
-            - 新加坡
-            - 美国
+            - 其他
 
       commands:
-        - proxy-groups.全部.proxies=[]proxyNames
-        #- proxy-groups.全部.proxies.0+DIRECT
+        - proxy-groups.全部.proxies=[]proxyNames # 向指定策略组添加订阅中的节点名，可使用正则过滤
+        #- proxy-groups.全部.proxies.0+DIRECT # 向指定分组第一个位置添加一个 DIRECT 节点名
         - proxy-groups.香港.proxies=[]proxyNames|香港
-        - proxy-groups.台湾.proxies=[]proxyNames|台湾
-        - proxy-groups.日本.proxies=[]proxyNames|日本
-        - proxy-groups.新加坡.proxies=[]proxyNames|新加坡
-        - proxy-groups.美国.proxies=[]proxyNames|美国
+        - proxy-groups.其他.proxies=[]proxyNames|^(.*)(台湾|日本|新加坡|美国)+(.*)$ 
         
-      prepend-rules:
+    # 添加规则
+      prepend-rules: # 规则由上往下遍历，如上面规则已经命中，则不再往下处理
         - RULE-SET,applications,DIRECT
         - DOMAIN,clash.razord.top,DIRECT
         - DOMAIN,yacd.haishan.me,DIRECT
@@ -78,6 +61,7 @@ parsers: # array
         - GEOIP,CN,DIRECT
         - MATCH,选择
 
+  # 添加规则集
       mix-rule-providers: 
         reject:
           type: http
