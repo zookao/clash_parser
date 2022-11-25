@@ -1,3 +1,4 @@
+```
 parsers: # array
   - reg: ^.*$
     code: |
@@ -175,3 +176,4 @@ parsers: # array
           url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/applications.txt"
           path: ./ruleset/applications.yaml
           interval: 86400
+```
