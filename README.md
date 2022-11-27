@@ -1,3 +1,5 @@
+基于 https://github.com/Loyalsoldier/clash-rules 项目
+
 ```
 parsers: # array
   # - reg: ^.*$ 匹配所有订阅，或  - url: https://example.com/profile.yaml 指定订阅
