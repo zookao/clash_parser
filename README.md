@@ -19,17 +19,17 @@ parsers: # array
         - name: 全部
           type: url-test
           url: http://www.gstatic.com/generate_204
-          interval: 60
+          interval: 600
 
         - name: 香港
           type: url-test
           url: http://www.gstatic.com/generate_204
-          interval: 60
+          interval: 600
 
         - name: 其他
           type: url-test
           url: http://www.gstatic.com/generate_204
-          interval: 60
+          interval: 600
 
         - name: 选择
           type: select
