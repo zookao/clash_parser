@@ -1,5 +1,6 @@
 基于 https://github.com/Loyalsoldier/clash-rules 项目
 
+```
 function main(config) {
   // 定义自动测速组
   const autoGroup = {
@@ -18,3 +19,4 @@ function main(config) {
   
   return config;
 }
+```
